@@ -1,6 +1,8 @@
 import * as borsh from '@project-serum/borsh'
-import { min } from 'bn.js';
+import { BN, min } from 'bn.js';
 import {Buffer} from 'buffer';
+import * as Layout from '../utils/layout'
+const BufferLayout = require('buffer-layout');
 
 export class AirdropSchema {
     amount: number;
@@ -42,31 +44,28 @@ export class DepositAllSchema {
     this.maxTokenB = maxTokenB;
   }
 
-  DEPOSIT_IX_DATA_LAYOUT = borsh.struct([
-    borsh.u8("instruction"),
-    borsh.u32("poolTokenAmount"),
-    borsh.u32("maxTokenA"),
-    borsh.u32("maxTokenB")
+  DEPOSIT_IX_DATA_LAYOUT = BufferLayout.struct([
+    BufferLayout.u8("instruction"),
+    Layout.uint64("poolTokenAmount"),
+    Layout.uint64("maxTokenA"),
+    Layout.uint64("maxTokenB")
   ]);
 
 
   serialize(): Buffer {
-    // const buffer = Buffer.alloc(1000)
-    // this.DEPOSIT_IX_DATA_LAYOUT.encode({ ...this, variant: 2 }, buffer)
-    // return buffer.slice(0, this.DEPOSIT_IX_DATA_LAYOUT.getSpan(buffer))
-    const payload = {
-      insruction: 2,
-      poolTokenAmount: this.poolTokenAmount,
-      maxTokenA: 100,
-      maxTokenB: 100
-    }
+    const data = Buffer.alloc(this.DEPOSIT_IX_DATA_LAYOUT.span);
+    this.DEPOSIT_IX_DATA_LAYOUT.encode(
+    {
+      instruction: 2,
+      poolTokenAmount: new BN(this.poolTokenAmount),
+      maxTokenA: new BN(this.maxTokenA),
+      maxTokenB: new BN(this.maxTokenB)
+    },
+    data
+  );
 
-    const msgBuffer = Buffer.alloc(1000);
-    this.DEPOSIT_IX_DATA_LAYOUT.encode(payload, msgBuffer);
-    console.log(msgBuffer);
-    const postIxData = msgBuffer.slice(0, this.DEPOSIT_IX_DATA_LAYOUT.getSpan(msgBuffer));
-
-    return postIxData
+  return data
+  
   }
 }
 
@@ -79,19 +78,33 @@ export class WithdrawSchema {
       this.maximumTokenAMount = maxAmount;
   }
 
-  WITHDRAW_IX_DATA_LAYOUT = borsh.struct([
-      borsh.u8("variant"),
-      borsh.u32("sourceAmount"),
-      borsh.u32("maxAmount")
-    ]);
+  // WITHDRAW_IX_DATA_LAYOUT = borsh.struct([
+  //     borsh.u8("variant"),
+  //     borsh.u32("sourceAmount"),
+  //     borsh.u32("maxAmount")
+  //   ]);
+
+  WITHDRAW_IX_DATA_LAYOUT = BufferLayout.struct([
+    BufferLayout.u8("instruction"),
+    Layout.uint64("sourceAmount"),
+    Layout.uint64("maxAmount"),
+  ]);
+
 
 
 
   serialize(): Buffer {
+    const data = Buffer.alloc(this.WITHDRAW_IX_DATA_LAYOUT.span);
+    this.WITHDRAW_IX_DATA_LAYOUT.encode(
+    {
+      instruction: 5,
+      sourceAmount: new BN(this.sourceTokenAmount),
+      maxAmount: new BN(this.maximumTokenAMount),
+    },
+    data
+  );
 
-  const buffer = Buffer.alloc(1000)
-  this.WITHDRAW_IX_DATA_LAYOUT.encode({ ...this, variant: 5 }, buffer)
-  return buffer.slice(0, this.WITHDRAW_IX_DATA_LAYOUT.getSpan(buffer))
+  return data
 }  
 
 }

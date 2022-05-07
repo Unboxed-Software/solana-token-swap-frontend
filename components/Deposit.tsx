@@ -7,7 +7,8 @@ import { kryptMint, ScroogeCoinMint, token_swap_state_account, swap_authority, p
 import { TOKEN_PROGRAM_ID } from '@solana/spl-token'
 import { DepositAllSchema } from '../models/Data'
 import { TOKEN_SWAP_PROGRAM_ID } from './const'
-import { TokenSwap } from '@solana/spl-token-swap'
+//import { TokenSwap } from '@solana/spl-token-swap'
+import * as Layout from '../utils/layout'
 
 export const DepositSingleTokenType: FC = () => {
     const [poolTokenAmount, setAmount] = useState(0)
@@ -18,7 +19,7 @@ export const DepositSingleTokenType: FC = () => {
 
     const handleSubmit = (event: any) => {
         event.preventDefault()
-        const deposit = new DepositAllSchema(poolTokenAmount, 100, 100)
+        const deposit = new DepositAllSchema(poolTokenAmount, 100e9, 100e9)
         handleTransactionSubmit(deposit)
     }
 
@@ -36,39 +37,39 @@ export const DepositSingleTokenType: FC = () => {
 
         const transaction = new Web3.Transaction()
         
-        // const depositIX = new Web3.TransactionInstruction({
-        // keys: [
-        //     { pubkey: token_swap_state_account, isSigner: false, isWritable: false },
-        //     { pubkey: swap_authority, isSigner: false, isWritable: false },
-        //     { pubkey: publicKey, isSigner: true, isWritable: false },
-        //     { pubkey: sourceA, isSigner: false, isWritable: true },
-        //     { pubkey: sourceB, isSigner: false, isWritable: true },
-        //     { pubkey: pool_krypt_account, isSigner: false, isWritable: true },
-        //     { pubkey: pool_scrooge_account, isSigner: false, isWritable: true },
-        //     { pubkey: pool_mint, isSigner: false, isWritable: true },
-        //     { pubkey: token_account_pool, isSigner: false, isWritable: true },
-        //     { pubkey: TOKEN_PROGRAM_ID, isSigner: false, isWritable: false },
-        //   ],
-        //   data: buffer,
-        //   programId: TOKEN_SWAP_PROGRAM_ID,
-        // })
+        const depositIX = new Web3.TransactionInstruction({
+        keys: [
+            { pubkey: token_swap_state_account, isSigner: false, isWritable: false },
+            { pubkey: swap_authority, isSigner: false, isWritable: false },
+            { pubkey: publicKey, isSigner: true, isWritable: false },
+            { pubkey: sourceA, isSigner: false, isWritable: true },
+            { pubkey: sourceB, isSigner: false, isWritable: true },
+            { pubkey: pool_krypt_account, isSigner: false, isWritable: true },
+            { pubkey: pool_scrooge_account, isSigner: false, isWritable: true },
+            { pubkey: pool_mint, isSigner: false, isWritable: true },
+            { pubkey: token_account_pool, isSigner: false, isWritable: true },
+            { pubkey: TOKEN_PROGRAM_ID, isSigner: false, isWritable: false },
+          ],
+          data: buffer,
+          programId: TOKEN_SWAP_PROGRAM_ID,
+        })
 
-        const depositIX = await TokenSwap.depositAllTokenTypesInstruction(
-            token_swap_state_account,
-            swap_authority,
-            publicKey,
-            sourceA,
-            sourceB,
-            pool_krypt_account,
-            pool_scrooge_account,
-            pool_mint,
-            token_account_pool,
-            TOKEN_SWAP_PROGRAM_ID,
-            TOKEN_PROGRAM_ID,
-            poolTokenAmount,
-            100,
-            100
-        )
+        // const depositIX = await TokenSwap.depositAllTokenTypesInstruction(
+        //     token_swap_state_account,
+        //     swap_authority,
+        //     publicKey,
+        //     sourceA,
+        //     sourceB,
+        //     pool_krypt_account,
+        //     pool_scrooge_account,
+        //     pool_mint,
+        //     token_account_pool,
+        //     TOKEN_SWAP_PROGRAM_ID,
+        //     TOKEN_PROGRAM_ID,
+        //     poolTokenAmount,
+        //     100,
+        //     100
+        // )
     
         transaction.add(depositIX)
 

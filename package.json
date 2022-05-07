@@ -20,6 +20,7 @@
     "@solana/wallet-adapter-react": "^0.15.4",
     "@solana/wallet-adapter-react-ui": "^0.9.6",
     "@solana/wallet-adapter-wallets": "^0.15.5",
+    "bn.js": "^5.2.0",
     "bs58": "^5.0.0",
     "buffer-layout": "^1.2.2",
     "framer-motion": "^6.3.1",
