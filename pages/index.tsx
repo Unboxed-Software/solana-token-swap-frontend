@@ -7,6 +7,8 @@ import { StudentIntroList } from '../components/StudentIntroList'
 import { Form } from '../components/Form'
 import styles from '../styles/Home.module.css'
 import { Airdrop } from '../components/AirdropForm'
+import { DepositSingleTokenType } from '../components/Deposit' 
+import { WithdrawSingleTokenType } from '../components/Withdraw'
 
 const Home: NextPage = () => {
   return (
@@ -21,6 +23,8 @@ const Home: NextPage = () => {
             Airdrop tokens
           </Heading>
           <Airdrop />
+          <DepositSingleTokenType />
+          <WithdrawSingleTokenType />
         </Box>
         </Center>
     </div>

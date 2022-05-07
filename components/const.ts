@@ -21,3 +21,7 @@ export const ScroogeCoinMint = new Web3.PublicKey("4AG5yRYmMcpMxcRvvkLPHHiSdnCnR
 export const airdropProgramId = new Web3.PublicKey("CPEV4ibq2VUv7UnNpkzUGL82VRzotbv2dy8vGwRfh3H3")
 
 export const airdropPDA = new Web3.PublicKey("99ynLfSvcRXwYMKv4kmbcAyGxhfD7KfgrsuHTx9Dvoot")
+
+export const TOKEN_SWAP_PROGRAM_ID = new Web3.PublicKey("SwaPpA9LAaLfeLi3a68M4DjnLqgtticKg6CnyNwgAC8")
+
+export const ASSOCIATED_TOKEN_PROGRAM_ID = new Web3.PublicKey('ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL');
