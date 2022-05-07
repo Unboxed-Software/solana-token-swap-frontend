@@ -10,6 +10,7 @@ import { Airdrop } from '../components/AirdropForm'
 import { DepositSingleTokenType } from '../components/Deposit' 
 import { WithdrawSingleTokenType } from '../components/Withdraw'
 import { SwapToken } from '../components/Swap'
+import { TokenSwapForm } from '../components/TokenSwapForm'
 
 const Home: NextPage = () => {
   return (
@@ -20,13 +21,14 @@ const Home: NextPage = () => {
       <AppBar />
         <Center>
         <Box>
-          <Heading as="h1" size="l" color="white" ml={4} mt={8}>
+          {/* <Heading as="h1" size="l" color="white" ml={4} mt={8}>
             Airdrop tokens
-          </Heading>
+          </Heading> */}
           <Airdrop />
-          <DepositSingleTokenType />
+          {/* <DepositSingleTokenType />
           <WithdrawSingleTokenType />
-          <SwapToken />
+          <SwapToken /> */}
+          <TokenSwapForm />
         </Box>
         </Center>
     </div>

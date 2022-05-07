@@ -67,7 +67,6 @@ export const WithdrawSingleTokenType: FC = () => {
         p={4}
         display={{ md: "flex" }}
         maxWidth="32rem"
-        borderWidth={1}
         margin={2}
         justifyContent="center"
     >
@@ -82,10 +81,6 @@ export const WithdrawSingleTokenType: FC = () => {
                     onChange={(valueString) => setAmount(parseInt(valueString))}
                 >
                     <NumberInputField id='amount' color='gray.400' />
-                    <NumberInputStepper color='gray.400'>
-                        <NumberIncrementStepper />
-                        <NumberDecrementStepper />
-                    </NumberInputStepper>
                 </NumberInput>
             </FormControl>
             <Button width="full" mt={4} type="submit">

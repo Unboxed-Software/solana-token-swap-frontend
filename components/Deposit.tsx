@@ -1,4 +1,4 @@
-import { Box, HStack, Spacer, Stack, Text, Button, FormControl, FormLabel, NumberDecrementStepper, NumberIncrementStepper, NumberInput, NumberInputField, NumberInputStepper  } from '@chakra-ui/react'
+import { Box, HStack, Spacer, Stack, Select, Button, FormControl, FormLabel, NumberDecrementStepper, NumberIncrementStepper, NumberInput, NumberInputField, NumberInputStepper  } from '@chakra-ui/react'
 import { FC, useState } from 'react'
 import * as Web3 from '@solana/web3.js'
 import { useConnection, useWallet } from '@solana/wallet-adapter-react'
@@ -7,10 +7,12 @@ import { kryptMint, ScroogeCoinMint, token_swap_state_account, swap_authority, p
 import { TOKEN_PROGRAM_ID } from '@solana/spl-token'
 import { DepositAllSchema } from '../models/Data'
 import { TOKEN_SWAP_PROGRAM_ID } from './const'
-//import { TokenSwap } from '@solana/spl-token-swap'
 import * as Layout from '../utils/layout'
 
-export const DepositSingleTokenType: FC = () => {
+export const DepositSingleTokenType: FC = (props: {
+    onInputChange?: (val: number) => void;
+    onMintChange?: (account: string) => void;
+}) => {
     const [poolTokenAmount, setAmount] = useState(0)
     const [mint, setMint] = useState(0)
 
@@ -53,23 +55,6 @@ export const DepositSingleTokenType: FC = () => {
           data: buffer,
           programId: TOKEN_SWAP_PROGRAM_ID,
         })
-
-        // const depositIX = await TokenSwap.depositAllTokenTypesInstruction(
-        //     token_swap_state_account,
-        //     swap_authority,
-        //     publicKey,
-        //     sourceA,
-        //     sourceB,
-        //     pool_krypt_account,
-        //     pool_scrooge_account,
-        //     pool_mint,
-        //     token_account_pool,
-        //     TOKEN_SWAP_PROGRAM_ID,
-        //     TOKEN_PROGRAM_ID,
-        //     poolTokenAmount,
-        //     100,
-        //     100
-        // )
     
         transaction.add(depositIX)
 
@@ -85,38 +70,86 @@ export const DepositSingleTokenType: FC = () => {
     }
 
 
+    // return (
+    //     <Box
+        // p={4}
+        // display={{ md: "flex" }}
+        // maxWidth="32rem"
+        // borderWidth={1}
+        // margin={2}
+        // justifyContent="center"
+    // >
+    //     <form onSubmit={handleSubmit}>
+    //         <FormControl isRequired>
+    //             <FormLabel color='gray.200'>
+    //                 Deposit Amount
+    //             </FormLabel>
+    //             <NumberInput
+    //                 max={1000}
+    //                 min={1}
+    //                 onChange={(valueString) => setAmount(parseInt(valueString))}
+    //             >
+    //                 <NumberInputField id='amount' color='gray.400' />
+    //                 <NumberInputStepper color='gray.400'>
+    //                     <NumberIncrementStepper />
+    //                     <NumberDecrementStepper />
+    //                 </NumberInputStepper>
+    //             </NumberInput>
+    //         </FormControl>
+    //         <Button width="full" mt={4} type="submit">
+    //             Deposit
+    //         </Button>
+    //     </form>
+        
+
+    //     </Box>
+    // )
+
     return (
         <Box
         p={4}
         display={{ md: "flex" }}
         maxWidth="32rem"
-        borderWidth={1}
         margin={2}
-        justifyContent="center"
-    >
-        <form onSubmit={handleSubmit}>
-            <FormControl isRequired>
-                <FormLabel color='gray.200'>
-                    Deposit Amount
-                </FormLabel>
-                <NumberInput
-                    max={1000}
-                    min={1}
-                    onChange={(valueString) => setAmount(parseInt(valueString))}
-                >
-                    <NumberInputField id='amount' color='gray.400' />
-                    <NumberInputStepper color='gray.400'>
-                        <NumberIncrementStepper />
-                        <NumberDecrementStepper />
-                    </NumberInputStepper>
-                </NumberInput>
-            </FormControl>
-            <Button width="full" mt={4} type="submit">
-                Deposit
-            </Button>
-        </form>
-        
+        justifyContent="center">
+      <form onSubmit={handleSubmit}>
+      <div style={{ padding: "0px 10px 5px 7px" }}>
+      <FormControl isRequired>
+          <FormLabel color='gray.200'>
+              Deposit Amount
+            </FormLabel>
+        <NumberInput
+          onChange={(valueString) => setAmount(parseInt(valueString))}
+          style={{
+            fontSize: 20,
+          }}
+          placeholder="0.00"
+        >
+            <NumberInputField id='amount' color='gray.400' />
 
-        </Box>
+        </NumberInput>
+
+
+        <div style={{ display: "felx" }}>
+          <Select
+            p={4}
+            display={{ md: "flex" }}
+            justifyContent="center"
+            placeholder="Token"
+            color="white"
+            variant='outline'
+            //onChange={(item) => {}}
+          >
+            <option value='option1'> Krypt </option>
+            <option value='option2'> Scrooge </option>
+          </Select>
+        </div>
+        <Button width="full" mt={4} type="submit">
+            Deposit
+        </Button>
+        </FormControl>
+      </div>
+      </form>
+    </Box>
     )
 }
