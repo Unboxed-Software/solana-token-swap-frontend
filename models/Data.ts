@@ -69,25 +69,22 @@ export class DepositAllSchema {
   }
 }
 
-export class WithdrawSchema {
-  sourceTokenAmount: number;
-  maximumTokenAMount: number;
+export class WithdrawAllSchema {
+  poolTokenAmount: number;
+  minTokenA: number;
+  minTokenB: number;
 
-  constructor(sourceAmount: number, maxAmount: number) {
-      this.sourceTokenAmount = sourceAmount;
-      this.maximumTokenAMount = maxAmount;
+  constructor(sourceAmount: number, minA: number, minB: number) {
+      this.poolTokenAmount = sourceAmount;
+      this.minTokenA = minA;
+      this.minTokenB = minB;
   }
-
-  // WITHDRAW_IX_DATA_LAYOUT = borsh.struct([
-  //     borsh.u8("variant"),
-  //     borsh.u32("sourceAmount"),
-  //     borsh.u32("maxAmount")
-  //   ]);
 
   WITHDRAW_IX_DATA_LAYOUT = BufferLayout.struct([
     BufferLayout.u8("instruction"),
-    Layout.uint64("sourceAmount"),
-    Layout.uint64("maxAmount"),
+    Layout.uint64("poolTokenAmount"),
+    Layout.uint64("minTokenA"),
+    Layout.uint64("minTokenB")
   ]);
 
 
@@ -97,9 +94,41 @@ export class WithdrawSchema {
     const data = Buffer.alloc(this.WITHDRAW_IX_DATA_LAYOUT.span);
     this.WITHDRAW_IX_DATA_LAYOUT.encode(
     {
-      instruction: 5,
-      sourceAmount: new BN(this.sourceTokenAmount),
-      maxAmount: new BN(this.maximumTokenAMount),
+      instruction: 3,
+      poolTokenAmount: new BN(this.poolTokenAmount),
+      minTokenA: new BN(this.minTokenA),
+      minTokenB: new BN(this.minTokenB)
+    },
+    data
+  );
+
+  return data
+}  
+
+}
+
+export class SwapSchema {
+  amountIn: number;
+  minimumAmountOut: number;
+
+  constructor(amount: number, minOut: number) {
+      this.amountIn = amount;
+      this.minimumAmountOut = minOut;
+  }
+
+  SWAP_IX_DATA_LAYOUT = BufferLayout.struct([
+    BufferLayout.u8('instruction'),
+    Layout.uint64('amountIn'),
+    Layout.uint64('minimumAmountOut'),
+  ]);
+
+  serialize(): Buffer {
+    const data = Buffer.alloc(this.SWAP_IX_DATA_LAYOUT.span);
+    this.SWAP_IX_DATA_LAYOUT.encode(
+    {
+      instruction: 1,
+      amountIn: new BN(this.amountIn),
+      minimumAmountOut: new BN(this.minimumAmountOut),
     },
     data
   );

@@ -4,23 +4,24 @@ import * as Web3 from '@solana/web3.js'
 import { useConnection, useWallet } from '@solana/wallet-adapter-react'
 import { getATA, createATA } from './utils'
 import { kryptMint, ScroogeCoinMint, token_account_pool, token_swap_state_account, swap_authority, pool_mint, pool_krypt_account, fee_account, pool_scrooge_account } from './const'
-import { WithdrawAllSchema } from '../models/Data'
+import { SwapSchema } from '../models/Data'
 import { TOKEN_SWAP_PROGRAM_ID } from './const'
 import { TOKEN_PROGRAM_ID } from '@solana/spl-token'
 
-export const WithdrawSingleTokenType: FC = () => {
+
+export const SwapToken: FC = () => {
     const [amount, setAmount] = useState(0)
 
     const { connection } = useConnection();
     const { publicKey, sendTransaction } = useWallet();
 
-    const handleWithdrawSubmit = (event: any) => {
+    const handleSwapSubmit = (event: any) => {
         event.preventDefault()
-        const withdraw = new WithdrawAllSchema(amount, 1, 1)
-        handleTransactionSubmit(withdraw)
+        const swap = new SwapSchema(amount, 1)
+        handleTransactionSubmit(swap)
     }
 
-    const handleTransactionSubmit = async (withdraw: WithdrawAllSchema) => {
+    const handleTransactionSubmit = async (swap: SwapSchema) => {
         if (!publicKey) {
             alert('Please connect your wallet!')
             return
@@ -30,19 +31,18 @@ export const WithdrawSingleTokenType: FC = () => {
         const userA = await getATA(kryptMint, publicKey)
         const userB = await getATA(ScroogeCoinMint, publicKey)
 
-        const buffer = withdraw.serialize()
+        const buffer = swap.serialize()
 
         const withdrawIX = new Web3.TransactionInstruction({
             keys: [
                 {pubkey: token_swap_state_account, isSigner: false, isWritable: false},
                 {pubkey: swap_authority, isSigner: false, isWritable: false},
                 {pubkey: publicKey, isSigner: true, isWritable: false},
-                {pubkey: pool_mint, isSigner: false, isWritable: true},
-                {pubkey: token_account_pool, isSigner: false, isWritable: true},
+                {pubkey: userA, isSigner: false, isWritable: true},
                 {pubkey: pool_krypt_account, isSigner: false, isWritable: true},
                 {pubkey: pool_scrooge_account, isSigner: false, isWritable: true},
-                {pubkey: userA, isSigner: false, isWritable: true},
                 {pubkey: userB, isSigner: false, isWritable: true},
+                {pubkey: pool_mint, isSigner: false, isWritable: true},
                 {pubkey: fee_account, isSigner: false, isWritable: true},
                 {pubkey: TOKEN_PROGRAM_ID, isSigner: false, isWritable: false},
               ],
@@ -62,6 +62,7 @@ export const WithdrawSingleTokenType: FC = () => {
         }
     }
 
+
     return (
         <Box
         p={4}
@@ -71,10 +72,10 @@ export const WithdrawSingleTokenType: FC = () => {
         margin={2}
         justifyContent="center"
     >
-        <form onSubmit={handleWithdrawSubmit}>
+        <form onSubmit={handleSwapSubmit}>
             <FormControl isRequired>
                 <FormLabel color='gray.200'>
-                    Withdraw Amount
+                    Swap Amount
                 </FormLabel>
                 <NumberInput
                     max={1000}
@@ -89,7 +90,7 @@ export const WithdrawSingleTokenType: FC = () => {
                 </NumberInput>
             </FormControl>
             <Button width="full" mt={4} type="submit">
-                Withdraw
+                Swap
             </Button>
         </form>
         

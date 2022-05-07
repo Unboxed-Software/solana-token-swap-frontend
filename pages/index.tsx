@@ -9,6 +9,7 @@ import styles from '../styles/Home.module.css'
 import { Airdrop } from '../components/AirdropForm'
 import { DepositSingleTokenType } from '../components/Deposit' 
 import { WithdrawSingleTokenType } from '../components/Withdraw'
+import { SwapToken } from '../components/Swap'
 
 const Home: NextPage = () => {
   return (
@@ -25,6 +26,7 @@ const Home: NextPage = () => {
           <Airdrop />
           <DepositSingleTokenType />
           <WithdrawSingleTokenType />
+          <SwapToken />
         </Box>
         </Center>
     </div>
