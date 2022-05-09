@@ -69,42 +69,6 @@ export const DepositSingleTokenType: FC = (props: {
 
     }
 
-
-    // return (
-    //     <Box
-        // p={4}
-        // display={{ md: "flex" }}
-        // maxWidth="32rem"
-        // borderWidth={1}
-        // margin={2}
-        // justifyContent="center"
-    // >
-    //     <form onSubmit={handleSubmit}>
-    //         <FormControl isRequired>
-    //             <FormLabel color='gray.200'>
-    //                 Deposit Amount
-    //             </FormLabel>
-    //             <NumberInput
-    //                 max={1000}
-    //                 min={1}
-    //                 onChange={(valueString) => setAmount(parseInt(valueString))}
-    //             >
-    //                 <NumberInputField id='amount' color='gray.400' />
-    //                 <NumberInputStepper color='gray.400'>
-    //                     <NumberIncrementStepper />
-    //                     <NumberDecrementStepper />
-    //                 </NumberInputStepper>
-    //             </NumberInput>
-    //         </FormControl>
-    //         <Button width="full" mt={4} type="submit">
-    //             Deposit
-    //         </Button>
-    //     </form>
-        
-
-    //     </Box>
-    // )
-
     return (
         <Box
         p={4}

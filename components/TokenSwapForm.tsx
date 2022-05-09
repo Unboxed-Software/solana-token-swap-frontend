@@ -14,24 +14,11 @@ import { useCurrencyPairState } from '../utils/CurrencyPair';
 
 export const TokenSwapForm: FC = () => {
 
-    // const { A, B, setLastTypedAccount } = useCurrencyPairState();
-
-    // const swapAccounts = () => {
-    //     const tempMint = A.mintAddress;
-    //     const tempAmount = A.amount;
-    //     A.setMint(B.mintAddress);
-    //     A.setAmount(B.amount);
-    //     B.setMint(tempMint);
-    //     B.setAmount(tempAmount);
-    //   };
-
     return (
         <Box>
-            <div>
             <DepositSingleTokenType />
             <WithdrawSingleTokenType />
             <SwapToken />
-            </div>
             {/* <Button type="submit" className="swap-button" onClick={swapAccounts}>
                 ⇅
             </Button> */}
