@@ -14,7 +14,7 @@ export const DepositSingleTokenType: FC = (props: {
     onMintChange?: (account: string) => void;
 }) => {
     const [poolTokenAmount, setAmount] = useState(0)
-    const [mint, setMint] = useState(0)
+    const [mint, setMint] = useState('')
 
     const { connection } = useConnection();
     const { publicKey, sendTransaction } = useWallet();
@@ -80,7 +80,7 @@ export const DepositSingleTokenType: FC = (props: {
       <div style={{ padding: "0px 10px 5px 7px" }}>
       <FormControl isRequired>
           <FormLabel color='gray.200'>
-              Deposit Amount
+              Amount to deposit to Liquidity Pool
             </FormLabel>
         <NumberInput
           onChange={(valueString) => setAmount(parseInt(valueString))}
@@ -92,22 +92,6 @@ export const DepositSingleTokenType: FC = (props: {
             <NumberInputField id='amount' color='gray.400' />
 
         </NumberInput>
-
-
-        <div style={{ display: "felx" }}>
-          <Select
-            p={4}
-            display={{ md: "flex" }}
-            justifyContent="center"
-            placeholder="Token"
-            color="white"
-            variant='outline'
-            //onChange={(item) => {}}
-          >
-            <option value='option1'> Krypt </option>
-            <option value='option2'> Scrooge </option>
-          </Select>
-        </div>
         <Button width="full" mt={4} type="submit">
             Deposit
         </Button>

@@ -19,9 +19,6 @@ export const TokenSwapForm: FC = () => {
             <DepositSingleTokenType />
             <WithdrawSingleTokenType />
             <SwapToken />
-            {/* <Button type="submit" className="swap-button" onClick={swapAccounts}>
-                ⇅
-            </Button> */}
         </Box>
     )
 }

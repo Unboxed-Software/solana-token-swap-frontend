@@ -73,7 +73,7 @@ export const WithdrawSingleTokenType: FC = () => {
         <form onSubmit={handleWithdrawSubmit}>
             <FormControl isRequired>
                 <FormLabel color='gray.200'>
-                    Withdraw Amount
+                    LP-Token Withdrawal Amount
                 </FormLabel>
                 <NumberInput
                     max={1000}
