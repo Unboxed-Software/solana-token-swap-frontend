@@ -21,13 +21,7 @@ const Home: NextPage = () => {
       <AppBar />
         <Center>
         <Box>
-          {/* <Heading as="h1" size="l" color="white" ml={4} mt={8}>
-            Airdrop tokens
-          </Heading> */}
           <Airdrop />
-          {/* <DepositSingleTokenType />
-          <WithdrawSingleTokenType />
-          <SwapToken /> */}
           <TokenSwapForm />
         </Box>
         </Center>

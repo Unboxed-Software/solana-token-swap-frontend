@@ -14,21 +14,22 @@ export async function getATA(mint: Web3.PublicKey, owner: Web3.PublicKey) {
     return ata
   }
   
-  export async function createATA(mint: Web3.PublicKey, owner: Web3.PublicKey, payer: Web3.PublicKey){
+  export async function createATA(mint: Web3.PublicKey, ata: Web3.PublicKey, payer: Web3.PublicKey){
+    const tx = new Web3.Transaction()
       // get or create ATA
-      let ata = await getAssociatedTokenAddress(
-          mint, // mint
-          owner, // owner
-        )
+      // let ata = await getAssociatedTokenAddress(
+      //     mint, // mint
+      //     owner, // owner
+      //   )
         //console.log(`ata: ${ata.toBase58()}`)
     
           const ix = await createAssociatedTokenAccountInstruction(
             payer, // payer
             ata, // ata
-            owner, // owner
+            payer, // owner
             mint // mint
           )
-  
+            
       return ix
   }
 

@@ -14,7 +14,6 @@ export const DepositSingleTokenType: FC = (props: {
     onMintChange?: (account: string) => void;
 }) => {
     const [poolTokenAmount, setAmount] = useState(0)
-    const [mint, setMint] = useState('')
 
     const { connection } = useConnection();
     const { publicKey, sendTransaction } = useWallet();

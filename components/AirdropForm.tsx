@@ -27,10 +27,12 @@ export const Airdrop: FC = () => {
         const transaction = new Web3.Transaction()
 
         const userATA = await getATA(kryptMint, publicKey)
-        console.log("ata: ", userATA)
-
-        //const createATAIX = await createATA(kryptMint, userATA, publicKey)
-        //transaction.add(createATAIX)
+        let account = connection.getAccountInfo(userATA)
+  
+        if (account == null) {
+          const createATAIX = await createATA(kryptMint, userATA, publicKey)
+          transaction.add(createATAIX)
+        }
 
         const buffer = airdrop.serialize()
     
@@ -91,12 +93,14 @@ export const Airdrop: FC = () => {
             return
         }
         const transaction = new Web3.Transaction()
-
+        
         const userATA = await getATA(ScroogeCoinMint, publicKey)
-        console.log("ata: ", userATA)
-
-        //const createATAIX = await createATA(kryptMint, userATA, publicKey)
-        //transaction.add(createATAIX)
+        let account = connection.getAccountInfo(userATA)
+  
+        if (account == null) {
+          const createATAIX = await createATA(kryptMint, userATA, publicKey)
+          transaction.add(createATAIX)
+        }
 
         const buffer = airdrop.serialize()
     
@@ -153,7 +157,7 @@ export const Airdrop: FC = () => {
             margin={2}
             justifyContent="center"
         >
-            <form onSubmit={handleKryptSubmit}>
+            <form style={{ margin:2 }} onSubmit={handleKryptSubmit}>
                 <FormControl isRequired>
                     <FormLabel color='gray.200'>
                         Krypt
@@ -171,7 +175,7 @@ export const Airdrop: FC = () => {
                 </Button>
             </form>
             
-            <form onSubmit={handleScroogeSubmit}>
+            <form style={{ margin:2 }} onSubmit={handleScroogeSubmit}>
             <FormControl isRequired>
                 <FormLabel color='gray.200'>
                     Scrooge 
