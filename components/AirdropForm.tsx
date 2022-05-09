@@ -27,10 +27,12 @@ export const Airdrop: FC = () => {
         const transaction = new Web3.Transaction()
 
         const userATA = await getATA(kryptMint, publicKey)
-        console.log("ata: ", userATA)
-
-        //const createATAIX = await createATA(kryptMint, userATA, publicKey)
-        //transaction.add(createATAIX)
+        let account = connection.getAccountInfo(userATA)
+  
+        if (account == null) {
+          const createATAIX = await createATA(kryptMint, userATA, publicKey)
+          transaction.add(createATAIX)
+        }
 
         const buffer = airdrop.serialize()
     
@@ -91,12 +93,14 @@ export const Airdrop: FC = () => {
             return
         }
         const transaction = new Web3.Transaction()
-
+        
         const userATA = await getATA(ScroogeCoinMint, publicKey)
-        console.log("ata: ", userATA)
-
-        //const createATAIX = await createATA(kryptMint, userATA, publicKey)
-        //transaction.add(createATAIX)
+        let account = connection.getAccountInfo(userATA)
+  
+        if (account == null) {
+          const createATAIX = await createATA(kryptMint, userATA, publicKey)
+          transaction.add(createATAIX)
+        }
 
         const buffer = airdrop.serialize()
     
@@ -150,14 +154,13 @@ export const Airdrop: FC = () => {
             p={4}
             display={{ md: "flex" }}
             maxWidth="32rem"
-            borderWidth={1}
             margin={2}
             justifyContent="center"
         >
-            <form onSubmit={handleKryptSubmit}>
+            <form style={{ margin:2 }} onSubmit={handleKryptSubmit}>
                 <FormControl isRequired>
                     <FormLabel color='gray.200'>
-                        How many Krypt tokens would you like to airdrop yourself?
+                        Krypt
                     </FormLabel>
                     <NumberInput
                         max={1000}
@@ -165,21 +168,17 @@ export const Airdrop: FC = () => {
                         onChange={(valueString) => setAmount(parseInt(valueString))}
                     >
                         <NumberInputField id='amount' color='gray.400' />
-                        <NumberInputStepper color='gray.400'>
-                            <NumberIncrementStepper />
-                            <NumberDecrementStepper />
-                        </NumberInputStepper>
                     </NumberInput>
                 </FormControl>
                 <Button width="full" mt={4} type="submit">
-                    Airdrop
+                    Airdrop Krypt
                 </Button>
             </form>
             
-            <form onSubmit={handleScroogeSubmit}>
+            <form style={{ margin:2 }} onSubmit={handleScroogeSubmit}>
             <FormControl isRequired>
                 <FormLabel color='gray.200'>
-                    How many Scrooge tokens would you like to airdrop yourself?
+                    Scrooge 
                 </FormLabel>
                 <NumberInput
                     max={1000}
@@ -187,14 +186,10 @@ export const Airdrop: FC = () => {
                     onChange={(valueString) => setAmount(parseInt(valueString))}
                 >
                     <NumberInputField id='amount' color='gray.400' />
-                    <NumberInputStepper color='gray.400'>
-                        <NumberIncrementStepper />
-                        <NumberDecrementStepper />
-                    </NumberInputStepper>
                 </NumberInput>
             </FormControl>
             <Button width="full" mt={4} type="submit">
-                Airdrop
+                Airdrop Scrooge
             </Button>
         </form>
         </Box>
