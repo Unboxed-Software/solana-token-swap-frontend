@@ -34,8 +34,6 @@ export const DepositSingleTokenType: FC = (props: {
 
         const buffer =  deposit.serialize()
 
-        // check balance is not 0 for these token accounts
-
         const transaction = new Web3.Transaction()
         
         const depositIX = new Web3.TransactionInstruction({
