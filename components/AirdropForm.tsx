@@ -30,7 +30,6 @@ export const Airdrop: FC = () => {
         let account = await connection.getAccountInfo(userATA)
   
         if (account == null) {
-          alert('krypt')
           const createATAIX = await createATA(kryptMint, userATA, publicKey)
           transaction.add(createATAIX)
         }

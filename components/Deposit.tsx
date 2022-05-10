@@ -85,7 +85,7 @@ export const DepositSingleTokenType: FC = (props: {
       <div style={{ padding: "0px 10px 5px 7px" }}>
       <FormControl isRequired>
           <FormLabel color='gray.200'>
-              Amount to deposit to Liquidity Pool
+              LP-Tokens to receive for deposit to Liquidity Pool
             </FormLabel>
         <NumberInput
           onChange={(valueString) => setAmount(parseInt(valueString))}
