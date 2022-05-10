@@ -27,9 +27,10 @@ export const Airdrop: FC = () => {
         const transaction = new Web3.Transaction()
 
         const userATA = await getATA(kryptMint, publicKey)
-        let account = connection.getAccountInfo(userATA)
+        let account = await connection.getAccountInfo(userATA)
   
         if (account == null) {
+          alert('krypt')
           const createATAIX = await createATA(kryptMint, userATA, publicKey)
           transaction.add(createATAIX)
         }
@@ -95,10 +96,10 @@ export const Airdrop: FC = () => {
         const transaction = new Web3.Transaction()
         
         const userATA = await getATA(ScroogeCoinMint, publicKey)
-        let account = connection.getAccountInfo(userATA)
+        let account = await connection.getAccountInfo(userATA)
   
         if (account == null) {
-          const createATAIX = await createATA(kryptMint, userATA, publicKey)
+          const createATAIX = await createATA(ScroogeCoinMint, userATA, publicKey)
           transaction.add(createATAIX)
         }
 

@@ -3,7 +3,7 @@ import { FC, useState } from 'react'
 import * as Web3 from '@solana/web3.js'
 import { useConnection, useWallet } from '@solana/wallet-adapter-react'
 import { getATA, createATA, uint64 } from './utils'
-import { kryptMint, ScroogeCoinMint, token_swap_state_account, swap_authority, pool_krypt_account, pool_scrooge_account, pool_mint, token_account_pool, fee_account } from "./const";
+import { kryptMint, ScroogeCoinMint, token_swap_state_account, swap_authority, pool_krypt_account, pool_scrooge_account, pool_mint, fee_account } from "./const";
 import { TOKEN_PROGRAM_ID } from '@solana/spl-token'
 import { DepositAllSchema } from '../models/Data'
 import { TOKEN_SWAP_PROGRAM_ID } from './const'
@@ -31,10 +31,18 @@ export const DepositSingleTokenType: FC = (props: {
         }
         const sourceA = await getATA(kryptMint, publicKey)
         const sourceB = await getATA(ScroogeCoinMint, publicKey)
-
-        const buffer =  deposit.serialize()
+        const token_account_pool = await getATA(pool_mint, publicKey)
 
         const transaction = new Web3.Transaction()
+
+        let account = await connection.getAccountInfo(token_account_pool)
+  
+        if (account == null) {
+          const createATAIX = await createATA(pool_mint, token_account_pool, publicKey)
+          transaction.add(createATAIX)
+        }
+
+        const buffer =  deposit.serialize()
         
         const depositIX = new Web3.TransactionInstruction({
         keys: [

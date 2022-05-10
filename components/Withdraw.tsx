@@ -3,7 +3,7 @@ import { FC, useState } from 'react'
 import * as Web3 from '@solana/web3.js'
 import { useConnection, useWallet } from '@solana/wallet-adapter-react'
 import { getATA, createATA } from './utils'
-import { kryptMint, ScroogeCoinMint, token_account_pool, token_swap_state_account, swap_authority, pool_mint, pool_krypt_account, fee_account, pool_scrooge_account } from './const'
+import { kryptMint, ScroogeCoinMint, token_swap_state_account, swap_authority, pool_mint, pool_krypt_account, fee_account, pool_scrooge_account } from './const'
 import { WithdrawAllSchema } from '../models/Data'
 import { TOKEN_SWAP_PROGRAM_ID } from './const'
 import { TOKEN_PROGRAM_ID } from '@solana/spl-token'
@@ -29,6 +29,7 @@ export const WithdrawSingleTokenType: FC = () => {
 
         const userA = await getATA(kryptMint, publicKey)
         const userB = await getATA(ScroogeCoinMint, publicKey)
+        const token_account_pool = await getATA(pool_mint, publicKey)
 
         const buffer = withdraw.serialize()
 
