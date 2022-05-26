@@ -2,12 +2,9 @@ import { Box, HStack, Spacer, Stack, Select, Button, FormControl, FormLabel, Num
 import { FC, useState } from 'react'
 import * as Web3 from '@solana/web3.js'
 import { useConnection, useWallet } from '@solana/wallet-adapter-react'
-import { getATA, createATA, uint64 } from './utils'
-import { kryptMint, ScroogeCoinMint, token_swap_state_account, swap_authority, pool_krypt_account, pool_scrooge_account, pool_mint, fee_account } from "./const";
-import { TOKEN_PROGRAM_ID } from '@solana/spl-token'
-import { DepositAllSchema } from '../models/Data'
-import { TOKEN_SWAP_PROGRAM_ID } from './const'
-import * as Layout from '../utils/layout'
+import { kryptMint, ScroogeCoinMint, tokenSwapStateAccount, swapAuthority, poolKryptAccount, poolScroogeAccount, poolMint } from "../utils/constants";
+import { TokenSwap, TOKEN_SWAP_PROGRAM_ID } from '@solana/spl-token-swap'
+import * as token from '@solana/spl-token'
 
 export const DepositSingleTokenType: FC = (props: {
     onInputChange?: (val: number) => void;
@@ -20,49 +17,52 @@ export const DepositSingleTokenType: FC = (props: {
 
     const handleSubmit = (event: any) => {
         event.preventDefault()
-        const deposit = new DepositAllSchema(poolTokenAmount, 100e9, 100e9)
-        handleTransactionSubmit(deposit)
+        handleTransactionSubmit()
     }
 
-    const handleTransactionSubmit = async (deposit: DepositAllSchema) => {
+    const handleTransactionSubmit = async () => {
         if (!publicKey) {
             alert('Please connect your wallet!')
             return
         }
-        const sourceA = await getATA(kryptMint, publicKey)
-        const sourceB = await getATA(ScroogeCoinMint, publicKey)
-        const token_account_pool = await getATA(pool_mint, publicKey)
+
+        const kryptATA = await token.getAssociatedTokenAddress(kryptMint, publicKey)
+        const scroogeATA = await token.getAssociatedTokenAddress(ScroogeCoinMint, publicKey)
+        const tokenAccountPool = await token.getAssociatedTokenAddress(poolMint, publicKey)
 
         const transaction = new Web3.Transaction()
 
-        let account = await connection.getAccountInfo(token_account_pool)
-  
+        let account = await connection.getAccountInfo(tokenAccountPool)
+
         if (account == null) {
-          const createATAIX = await createATA(pool_mint, token_account_pool, publicKey)
-          transaction.add(createATAIX)
+            const createATAInstruction =
+                token.createAssociatedTokenAccountInstruction(
+                    publicKey,
+                    tokenAccountPool,
+                    publicKey,
+                    poolMint
+                )
+            transaction.add(createATAInstruction)
         }
 
-        const buffer =  deposit.serialize()
-        
-        const depositIX = new Web3.TransactionInstruction({
-        keys: [
-            { pubkey: token_swap_state_account, isSigner: false, isWritable: false },
-            { pubkey: swap_authority, isSigner: false, isWritable: false },
-            { pubkey: publicKey, isSigner: true, isWritable: false },
-            { pubkey: sourceA, isSigner: false, isWritable: true },
-            { pubkey: sourceB, isSigner: false, isWritable: true },
-            { pubkey: pool_krypt_account, isSigner: false, isWritable: true },
-            { pubkey: pool_scrooge_account, isSigner: false, isWritable: true },
-            { pubkey: pool_mint, isSigner: false, isWritable: true },
-            { pubkey: token_account_pool, isSigner: false, isWritable: true },
-            { pubkey: TOKEN_PROGRAM_ID, isSigner: false, isWritable: false },
-          ],
-          data: buffer,
-          programId: TOKEN_SWAP_PROGRAM_ID,
-        })
-    
-        transaction.add(depositIX)
+        const instruction = TokenSwap.depositAllTokenTypesInstruction(
+            tokenSwapStateAccount,
+            swapAuthority,
+            publicKey,
+            kryptATA,
+            scroogeATA,
+            poolKryptAccount,
+            poolScroogeAccount,
+            poolMint,
+            tokenAccountPool,
+            TOKEN_SWAP_PROGRAM_ID,
+            token.TOKEN_PROGRAM_ID,
+            poolTokenAmount,
+            100e9,
+            100e9
+        )
 
+        transaction.add(instruction)
         try {
             let txid = await sendTransaction(transaction, connection)
             alert(`Transaction submitted: https://explorer.solana.com/tx/${txid}?cluster=devnet`)
@@ -71,7 +71,6 @@ export const DepositSingleTokenType: FC = (props: {
             console.log(JSON.stringify(e))
             alert(JSON.stringify(e))
         }
-
     }
 
     return (
