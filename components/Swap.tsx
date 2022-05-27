@@ -43,7 +43,7 @@ export const SwapToken: FC = () => {
     }
 
     const kryptMintInfo = await token.getMint(connection, kryptMint);
-    const ScroogeCOinMintInfo = await token.getMint(
+    const ScroogeCoinMintInfo = await token.getMint(
       connection,
       ScroogeCoinMint
     );
@@ -109,7 +109,7 @@ export const SwapToken: FC = () => {
         null,
         TOKEN_SWAP_PROGRAM_ID,
         TOKEN_PROGRAM_ID,
-        amount * 10 ** ScroogeCOinMintInfo.decimals,
+        amount * 10 ** ScroogeCoinMintInfo.decimals,
         0
       );
 
