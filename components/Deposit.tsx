@@ -40,67 +40,6 @@ export const DepositSingleTokenType: FC = (props: {
             alert("Please connect your wallet!")
             return
         }
-
-        const poolMintInfo = await token.getMint(connection, poolMint)
-
-        const kryptATA = await token.getAssociatedTokenAddress(
-            kryptMint,
-            publicKey
-        )
-        const scroogeATA = await token.getAssociatedTokenAddress(
-            ScroogeCoinMint,
-            publicKey
-        )
-        const tokenAccountPool = await token.getAssociatedTokenAddress(
-            poolMint,
-            publicKey
-        )
-
-        const transaction = new Web3.Transaction()
-
-        let account = await connection.getAccountInfo(tokenAccountPool)
-
-        if (account == null) {
-            const createATAInstruction =
-                token.createAssociatedTokenAccountInstruction(
-                    publicKey,
-                    tokenAccountPool,
-                    publicKey,
-                    poolMint
-                )
-            transaction.add(createATAInstruction)
-        }
-
-        const instruction = TokenSwap.depositAllTokenTypesInstruction(
-            tokenSwapStateAccount,
-            swapAuthority,
-            publicKey,
-            kryptATA,
-            scroogeATA,
-            poolKryptAccount,
-            poolScroogeAccount,
-            poolMint,
-            tokenAccountPool,
-            TOKEN_SWAP_PROGRAM_ID,
-            token.TOKEN_PROGRAM_ID,
-            poolTokenAmount * 10 ** poolMintInfo.decimals,
-            100e9,
-            100e9
-        )
-
-        transaction.add(instruction)
-        try {
-            let txid = await sendTransaction(transaction, connection)
-            alert(
-                `Transaction submitted: https://explorer.solana.com/tx/${txid}?cluster=devnet`
-            )
-            console.log(
-                `Transaction submitted: https://explorer.solana.com/tx/${txid}?cluster=devnet`
-            )
-        } catch (e) {
-            console.log(JSON.stringify(e))
-            alert(JSON.stringify(e))
-        }
     }
 
     return (
